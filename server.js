@@ -39,7 +39,7 @@ app.use(flash());
  
 //PASSPORT CONFIGURATION
 app.use(require("express-session")({
-  secret:"Shutter Island is the best movie",
+  secret:process.env.SECRETKEY,
   resave:false,
   saveUninitialized: false
 }));
