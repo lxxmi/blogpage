@@ -1,0 +1,42 @@
+    
+<%-include("../partials/header") %>
+  <div style="text-align:center;padding:0px 20px" class="ui container">
+    <span style="float:left">
+      <strong>
+        <%= username %>
+      </strong>
+    </span>
+    <span style="display:inline-block">
+      <strong>
+        All Posts
+      </strong>
+    </span>
+    <a href="/chat" class="rightfloat ui tiny basic blue button">
+      Send a Message
+    </a>
+</div>
+<% blog.forEach(function(x){ %>
+  <div class="ui item segment main text container">    
+    <h2 class="header"><%= x.title %></h2>
+    <h5><%=x.createdOn.toDateString() %></h5>
+    <img src="/<%= x.image%>" class="ui centered image" style="width:300px;height:200px;">
+    <p class="ui content">
+      <div class="description">
+        <%- x.desc.substring(0,300) %>...
+        <a href="/blogs/<%=x._id%>">read more</a>        
+      </div>
+    </p>
+</div>
+   <% }); %>   
+
+    <footer>
+      Made with <a href="https://glitch.com">Glitch</a>!
+    </footer>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script> -->
+
+  </body>
+</html>

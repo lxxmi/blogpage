@@ -1,0 +1,37 @@
+    
+<%-include("../partials/header") %>
+<% body.forEach(function(x){ %>
+  <div class="ui item segment main text container">    
+    <h2 class="header">
+      <a href="/blogs/<%=x._id%>">
+        <%= x.title %>
+      </a>
+    </h2>
+    <h5 style="margin-top:0;display:inline-block;">
+      <%=x.createdOn.toDateString() %>
+    </h5>
+    <span class="rightfloat" >
+      <em>Submitted By <%= x.author.name%></em>
+    </span>
+
+    <img src="<%= x.image%>" class="ui centered image" style="width:300px;height:200px;">
+    <p class="ui content">
+      <div class="description">
+        <%- x.desc.substring(0,300) %>...
+        <a href="/blogs/<%=x._id%>">read more</a>        
+      </div>
+    </p>
+  </div>
+   <% }); %>    <p></p>
+
+    <footer>
+      Made with <a href="https://glitch.com">Glitch</a>!
+    </footer>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script> -->
+
+  </body>
+</html>

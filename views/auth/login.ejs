@@ -1,0 +1,33 @@
+<%-include("../partials/header") %>
+<div class="ui segment container">
+    <h2>
+       Login to your account
+    </h2>
+    <form class="ui form" action="/login" method="post">
+        <div class="field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter email" required>  
+        </div>
+        <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>  
+        </div>
+        
+        <input class="ui blue button" type="submit" value="Login">
+    </form>
+  <div class="ui message">
+      New to us?  <a href="/register">Register</a>
+    </div>
+</div>
+
+<footer>
+    Made with <a href="https://glitch.com">Glitch</a>!
+</footer>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script> -->
+
+  </body>
+</html>

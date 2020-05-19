@@ -1,0 +1,25 @@
+<%-include("../partials/header") %>
+<div class="ui segment container">
+    <h2>
+        New Comment to <%= blog.title%>
+    </h2>
+    <form class="ui form" action="/blogs/<%= blog._id%>/comments/" method="post">
+        <div class="field">
+            <label>Content</label>
+            <input type="text" name="comment[content]" placeholder="Enter the comment here..." required>  
+        </div>
+        <input class="ui blue button" type="submit" value="comment">
+    </form>
+</div>
+
+<footer>
+    Made with <a href="https://glitch.com">Glitch</a>!
+</footer>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script> -->
+
+  </body>
+</html>

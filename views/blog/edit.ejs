@@ -1,0 +1,33 @@
+<%-include("../partials/header") %>
+<div class="ui segment container">
+    <h2>
+        Edit Post : <%= blog.title%> 
+    </h2>
+    <form class="ui form" action="/blogs/<%= blog._id%>?_method=PUT" method="POST">
+        <div class="field">
+            <label>Title</label>
+            <input type="text" name="blog[title]" placeholder="Enter title here..." value="<%= blog.title%>" required>  
+        </div>
+        <div class="field">
+            <label>Image url</label>
+            <input type="text" name="blog[image]" placeholder="Enter image url here..." value="<%= blog.image%>" required>  
+        </div>
+        <div class="field">
+            <label>Description</label>
+            <textarea name="blog[desc]" placeholder="Enter description here..."  required><%- blog.desc%></textarea>
+        </div> 
+        <input class="ui blue button" type="submit" value="Update">
+    </form>
+</div>
+
+<footer>
+    Made with <a href="https://glitch.com">Glitch</a>!
+</footer>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script> -->
+
+  </body>
+</html>

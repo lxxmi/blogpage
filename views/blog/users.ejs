@@ -1,0 +1,28 @@
+    
+<%-include("../partials/header") %>
+<div class="ui segment container">
+  <h3>
+    All Registered Users
+  </h3>
+<% body.forEach(function(x){ %>
+  
+  <div class="ui item segment main text container">
+    <a href="/userposts/<%=x._id%>"><%= x.name %></a>
+     <form style="display:inline; float:right" action="/users/<%=x._id%>?_method=DELETE" method="POST">
+      <button class="ui tiny red button">Delete</button>
+    </form>
+   </div>
+   <% }); %>  
+</div>
+
+    <footer>
+      Made with <a href="https://glitch.com">Glitch</a>!
+    </footer>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script> -->
+
+  </body>
+</html>

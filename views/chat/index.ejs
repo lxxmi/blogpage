@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Welcome to Glitch!</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">   
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js" defer></script>
+    <style>
+      .rightPara{
+        text-align:right;
+        margin:10px;
+      }
+      .leftPara{
+        margin:5px;
+      }
+      .bubble{
+        padding:5px;
+        border:1px solid #1e70bf;
+        color:white;
+        background:#1e70bf;
+        box-shadow:1px 1px 10px #f8f8ff8;
+        border-radius: 7px;
+      }
+      .username{
+        padding-left:5px;
+        font-size:10px;
+        color:rgba(0,0,0,0.5);
+      }
+      .timestamp{
+        padding:0px 2px;
+        font-size:10px;
+      }
+      .userJoined{
+        margin:2px;
+        font-size:10px;
+        color:rgba(0,0,0,0.5);
+        text-align:center;
+      }
+    </style>
+    <script>
+      $(function () {
+        var noOfUsers = 0;
+        var username = window.prompt("Please enter your name", "");
+        if(username == null || username ==""){
+          window.location.href = "/blogs";
+        }
+        var currentTime = new Date();
+        var hour = currentTime.getHours();
+        var min  = currentTime.getMinutes();
+        var sec  = currentTime.getSeconds();
+
+        var socket =io();
+        var text = $(".newtext");
+        var sendButton = $(".sendtext");
+        var messageArea = $(".message-area");
+        var typing = $(".typing");
+        var userCount = $(".activeUserCount");
+        
+      if(username){
+        socket.emit("setUsername",username);
+
+        socket.on("userJoined", (data)=>{
+            messageArea.append('<p class="userJoined">'+data+' has joined!...</p>');
+        });
+        socket.on("userLeft", (data)=>{
+            messageArea.append('<p class="userJoined">'+data+' has left!...</p>');
+        });
+        
+        socket.on("userCount", (noOfUsers)=>{
+          userCount.text(noOfUsers);
+        });
+        
+        //isTyping event
+        text.on('input',function(){
+          if(this.value.length >0){
+            socket.emit("typing", { user: username, message: "is typing…"});
+          }
+          else{
+            socket.emit("stoptyping", "");
+          }
+        });
+        
+        function keepFading(){
+          typing.fadeToggle(1500, ()=> {
+            keepFading();
+          });
+        }
+      
+        socket.on("typing", (data) => {
+          typing.text(data.user + " " + data.message);
+          keepFading();
+        });
+        
+        //stop typing
+//        text.keyup(function(){
+        //  socket.emit("stoptyping", "");
+ //       });
+        
+        socket.on("stoptyping", () => {
+          typing.text("");
+        });
+
+        sendButton.on('click',sendMessage);
+        text.keydown(function(e){
+          console.log(e.keyCode);
+          if (e.keyCode === 13) {sendMessage();}
+        });
+        function sendMessage(){
+          if(text.val()){
+            var curTime =hour+":"+min;
+            messageArea.append('<p class="rightPara"><span class="bubble ">'+text.val()+'<span class="timestamp">'+curTime+'</span></span></p>');
+            socket.emit("stoptyping", "");
+            messageArea.scrollTop(9999);
+            socket.emit("new message", {content:text.val(),username:username, timestamp:curTime});
+          }
+          text.val("");
+          text.focus();
+        }
+
+        socket.on("new message", (msg)=>{
+            console.log(`message recieved at Client: ${msg}`);
+            messageArea.append('<p class="leftPara"><span class="bubble">'+msg.content+'<span class="timestamp">'+msg.timestamp+'</span></span></br><span class="username">'+msg.username+'</span></p>');
+            messageArea.scrollTop(9999);
+          });
+      }
+    });
+    </script>
+ </head>
+  <body>
+    <div id="navbar" class="ui secondary pointing menu container">
+      <a href="/blogs" class="item header">
+        Home
+      </a>
+      <a href="/blogs/new" class="item">
+        Create New Post
+      </a>
+      <a href="/chat" class="item">
+        Chat
+      </a>
+      <% if(currentUser && (currentUser.name == "admin") ){%>
+      <a href="/users" class="item">
+        Users List
+      </a>
+      <% } %>
+      <span class="right menu">
+<!--    <div class="ui icon input">
+      <input type="text" placeholder="Search...">
+      <i class="search icon"></i>
+      </div>-->
+      <% if(!currentUser){%>
+      <a class="ui item " href="/register">
+        Register
+      </a>
+      <a class="ui item " href="/login">
+        Login
+      </a>
+      <%  }else{ %>
+          <div class="ui simple dropdown item">
+            <i class="user small icon"></i>
+            <%= currentUser.name%>
+            <i class="dropdown icon"></i>
+            <div class="left menu">
+                <a href="/userposts/<%=currentUser._id%>" class="ui item">
+                  My Posts
+                </a>
+                <a href="/users/<%=currentUser._id%>/edit" class="ui item">
+                  Change Username
+                </a>
+                <a href="/logout" class="ui item">
+                  Logout
+                </a>
+          </div>
+        </div>
+
+      <% } %>
+      </span>
+  </div>
+
+    <% if(successflash && successflash.length > 0){ %>
+    <div class="ui container tiny green message">
+      <%= successflash%>
+    </div>
+    <% } %>
+
+    <% if(error && error.length > 0){ %>
+    <div class="ui container tiny red message">
+      <%= error %>
+    </div>
+    <% } %>
+    
+<div class="chatbox ui segment container" style="width:350px;margin:auto 50px;border:1px solid #999;padding:10px;">
+  <div class="ui label" style="background:#efe;width:100%;">
+    Welcome! 
+    <span class="rightfloat">
+      Active Users: <span class="activeUserCount">0</span>
+    </span>
+  </div>
+  <hr>
+  <div class="message-area" style="padding:5px 0px;height:400px;overflow-y:auto;">
+  </div>
+  <div style="height:20px;text-align:center"class="typing"></div>
+  <div class="ui action input" style="width:100%">
+    <input class="newtext" type="text" placeholder="Enter message..." autocomplete="off">
+    <button class="sendtext ui icon button">
+      <i class="send icon"></i>
+    </button>
+  </div>
+</div>
+
+  </body>
+<script>
+
+</script>
+</html>

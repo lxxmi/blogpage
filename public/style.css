@@ -1,0 +1,27 @@
+a{
+  color:black;
+}
+#navbar a{
+  display: block;
+  margin: 0;
+}
+.rightfloat{
+  float:right;
+}
+.avatar{
+  padding-top:10px;
+}
+.titleBox h2, .header{
+    text-transform: capitalize;
+}
+.authorBox a{
+  margin-top:5px;
+  display:inline-block;
+  color:black;
+  font-size:20px;
+}
+.date{
+  padding-left:35px;
+  font-size:12px;
+  color:grey;
+}

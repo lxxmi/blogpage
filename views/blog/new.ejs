@@ -1,0 +1,33 @@
+<%-include("../partials/header") %>
+<div class="ui segment container">
+    <h2>
+        New Post
+    </h2>
+    <form class="ui form" action="/newpost" method="post" enctype="multipart/form-data">
+        <div class="field">
+            <label>Title</label>
+            <input type="text" name="title" placeholder="Enter title here..." required>  
+        </div>
+        <div class="field">
+            <label>Image url</label>
+            <input type="file" name="image" placeholder="Choose image" required>  
+        </div>
+        <div class="field">
+            <label>Description</label>
+            <textarea name="desc" placeholder="Enter description here..."  required></textarea>
+        </div> 
+        <input class="ui blue button" type="submit" value="Create">
+    </form>
+</div>
+
+<footer>
+    Made with <a href="https://glitch.com">Glitch</a>!
+</footer>
+
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script> -->
+
+  </body>
+</html>
